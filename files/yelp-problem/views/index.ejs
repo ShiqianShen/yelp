@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript"  src="/javascripts/jquery.js"></script>
+    <script type="text/javascript"  src="/javascripts/json2.js"></script>
+    <script language="javascript" type="text/javascript">
+      function BusinessList(jsons) {
+        var table = document.getElementById("BusinessTable");
+        var arr = eval(jsons);
+        for (var i = 0; i < arr.length; i++) {
+          var jsonObj = arr[i];
+          var tr = table.insertRow(table.rows.length);
+          var td0 = tr.insertCell(0);
+          td0.align = "center";
+          var td1 = tr.insertCell(1);
+          td1.align = "center";
+          var td2 = tr.insertCell(2);
+          td2.align = "center";
+          var td3 = tr.insertCell(3);
+          td3.align = "center";
+          var td4 = tr.insertCell(4);
+          td4.align = "center";
+
+          td0.innerHTML = jsonObj.business_id;
+          td1.innerHTML = jsonObj.name;
+          td2.innerHTML = jsonObj.categories;
+          td3.innerHTML = jsonObj.full_address;
+          td4.innerHTML = jsonObj.stars;
+        }
+      }
+    </script>
+  </head>
+  <body onload="BusinessList(<%= JSON.stringify(contents) %>);">
+    <h1><%= title %></h1>
+    <h2>Welcome to <%= title %></h2>
+    <form action='/user' method='post'>
+      <p>UserID:</p>
+      <input type="text" name="user_id">
+      <br>
+      <br>
+      <button type="submit" value='Submit' class="btn btn-primary">Submit</button>
+    </form>
+    <br>
+    <br>
+    <table width="100%" border="0" cellspacing="50%" id="BusinessTable">
+      <tr bgcolor="#339933" style="font-size:18px;FONT-WEIGHT:bold;">
+        <td align="center">id</td>
+        <td align="center">name</td>
+        <td align="center">category</td>
+        <td align="center">address</td>
+        <td align="center">stars</td>
+      </tr>
+    </table>
+
+  </body>
+</html>

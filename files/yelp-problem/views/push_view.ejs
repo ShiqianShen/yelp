@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript"  src="/javascripts/jquery.js"></script>
+    <script type="text/javascript"  src="/javascripts/json2.js"></script>
+    <script language="javascript" type="text/javascript">
+      function BusinessList(jsons) {
+        var table = document.getElementById("BusinessTable");
+        var arr = eval(jsons);
+        for (var i = 0; i < arr.length; i++) {
+          var jsonObj = arr[i];
+          var tr = table.insertRow(table.rows.length);
+          var td0 = tr.insertCell(0);
+          td0.align = "center";
+          var td1 = tr.insertCell(1);
+          td1.align = "center";
+          var td2 = tr.insertCell(2);
+          td2.align = "center";
+          var td3 = tr.insertCell(3);
+          td3.align = "center";
+
+          td0.innerHTML = jsonObj.name;
+          td1.innerHTML = jsonObj.full_address;
+          td2.innerHTML = jsonObj.categories;
+          td3.innerHTML = jsonObj.stars;
+        }
+      }
+    </script>
+  </head>
+  <body onload="BusinessList(<%= JSON.stringify(contents) %>);" background="../images/u=448124102,4271476439&fm=21&gp=0.jpg">
+    <h1><%= title %></h1>
+    <br>
+    <br>
+    <a class="btn" href="/home">Back</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a class="btn" href="/logout">Logout</a>
+    <br>
+    <br>
+    <br>
+    <table width="100%" border="1" cellspacing="50%" id="BusinessTable">
+      <tr bgcolor="#CA8EFF" style="font-size:18px;FONT-WEIGHT:bold;">
+        <td align="center">name</td>
+        <td align="center">address</td>
+        <td align="center">category</td>
+        <td align="center">stars</td>
+      </tr>
+    </table>
+  </body>
+</html>

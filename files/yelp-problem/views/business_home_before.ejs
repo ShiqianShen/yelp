@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript"  src="/javascripts/jquery.js"></script>
+    <script type="text/javascript"  src="/javascripts/json2.js"></script>
+      <script language="javascript" type="text/javascript">
+          function BusinessList(jsons) {
+              var table = document.getElementById("BusinessTable");
+              var arr = eval(jsons);
+              for (var i = 0; i < arr.length && i<10; i++) {
+                  var jsonObj = arr[i];
+                  var tr = table.insertRow(table.rows.length);
+                  var td0 = tr.insertCell(0);
+                  td0.align = "center";
+                  var td1 = tr.insertCell(1);
+                  td1.align = "center";
+                  var td2 = tr.insertCell(2);
+                  td2.align = "center";
+                  var td3 = tr.insertCell(3);
+                  td3.align = "center";
+
+                  td0.innerHTML = jsonObj.full_address;
+                  td1.innerHTML = jsonObj.categories;
+                  td2.innerHTML = jsonObj.stars;
+              }
+          }
+      </script>
+  </head>
+  <body onload="BusinessList(<%= JSON.stringify(business) %>);" background="../images/u=448124102,4271476439&fm=21&gp=0.jpg">
+    <h1><%= title %></h1>
+    <br>
+    <br>
+    <h1>Welcome ! <%= eval(JSON.stringify(business))[0].name%> !</h1>
+    <table width="60%" border="0" cellspacing="50%" id="BusinessTable">
+        <tr bgcolor="#FF7575" style="font-size:18px;FONT-WEIGHT:bold;">
+            <td align="center">address</td>
+            <td align="center">category</td>
+            <td align="center">stars</td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <div class="container">
+        <form class="col-sm-offset-4 col-sm-4 form-horizontal" role="form" method="post">
+            <h2>Search for Consumers ?</h2>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type="submit" class="btn btn-primary">Start</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br>
+    <br>
+    <a class="btn" href="/logout">Logout</a>
+
+</body>
+</html>
