@@ -24,36 +24,39 @@ var sortBy = function (filed, rev, primer) {
     }
 };
 
-exports.UserPush = function(id, Location, Category){
+exports.UserPush = function(id, Location, Category, Method){
+    if (Method=="city"){
+        if (Category){
+            var params ={
+                TableName : "Business",
+                IndexName: "city-stars-index",
+                KeyConditionExpression: "#ct = :cccc",
+                FilterExpression: "contains(categories, :letter)",
+                ScanIndexForward: false,
+                ExpressionAttributeNames:{
+                    "#ct": "city"
+                },
+                ExpressionAttributeValues: {
+                    ":cccc": Location,
+                    ":letter": Category
+                }
+            };
+        }else{
+            var params ={
+                TableName : "Business",
+                IndexName: "city-stars-index",
+                KeyConditionExpression: "#ct = :cccc",
+                ScanIndexForward: false,
+                ExpressionAttributeNames:{
+                    "#ct": "city"
+                },
+                ExpressionAttributeValues: {
+                    ":cccc": Location
+                }
+            };
+        }
+    }else if (Method=="cood") {
 
-    if (Category){
-        var params ={
-            TableName : "Business",
-            IndexName: "city-stars-index",
-            KeyConditionExpression: "#ct = :cccc",
-            FilterExpression: "contains(categories, :letter)",
-            ScanIndexForward: false,
-            ExpressionAttributeNames:{
-                "#ct": "city"
-            },
-            ExpressionAttributeValues: {
-                ":cccc": Location,
-                ":letter": Category
-            }
-        };
-    }else{
-        var params ={
-            TableName : "Business",
-            IndexName: "city-stars-index",
-            KeyConditionExpression: "#ct = :cccc",
-            ScanIndexForward: false,
-            ExpressionAttributeNames:{
-                "#ct": "city"
-            },
-            ExpressionAttributeValues: {
-                ":cccc": Location
-            }
-        };
     }
 
     var def = p.defer();

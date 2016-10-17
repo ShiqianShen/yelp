@@ -91,9 +91,20 @@ router.route('/home')
 
         var Location = req.body.Location;
         var Category = req.body.Category;
-        //console.log(Category);
-        var Content = UP.UserPush(id, Location, Category);
-        res.render('user_home_after', { title: 'Home', user: User, contents: Content});
+        var Method = "";
+        if (req.body.city=='on'){
+          Method='city';
+        }else if (req.body.cood=='on'){
+          Method='cood';
+        }
+        //console.log(method);
+        if (Method!=""){
+          var Content = UP.UserPush(id, Location, Category, Method);
+          res.render('user_home_after', { title: 'Home', user: User, contents: Content});
+        }
+        else{
+          res.render('user_home_before', { title: 'Home', user: User });
+        }
         //res.redirect('/home');
       }else if (req.session.type == 'business') {
         var params ={
