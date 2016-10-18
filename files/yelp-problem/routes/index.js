@@ -96,6 +96,18 @@ router.route('/home')
           Method='city';
         }else if (req.body.cood=='on'){
           Method='cood';
+          Location = Location.split(",");
+          if (parseInt(Location[0],10)){
+            Location[0] = parseFloat(Location[0],10);
+          }else {
+            res.render('user_home_before', { title: 'Home', user: User });
+          }
+          if (parseInt(Location[1],10)){
+            Location[1] = parseFloat(Location[1],10);
+          }else {
+            res.render('user_home_before', { title: 'Home', user: User });
+          }
+          //console.log(Location);
         }
         //console.log(method);
         if (Method!=""){

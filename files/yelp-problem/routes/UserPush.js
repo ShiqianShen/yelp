@@ -56,7 +56,45 @@ exports.UserPush = function(id, Location, Category, Method){
             };
         }
     }else if (Method=="cood") {
-
+        console.log(Location);
+        if (Category){
+            var params ={
+                TableName : "Business",
+                IndexName: "type-longitude-index",
+                KeyConditionExpression: "#tp = :tttt and longitude between :number1 and :number2",
+                FilterExpression: "contains(categories, :letter) and latitude between :number3 and :number4",
+                ScanIndexForward: false,
+                ExpressionAttributeNames:{
+                    "#tp": "type"
+                },
+                ExpressionAttributeValues: {
+                    ":tttt": "business",
+                    ":number1": Location[0]-2,
+                    ":number2": Location[0]+2,
+                    ":number3": Location[1]-2,
+                    ":number4": Location[1]+2,
+                    ":letter": Category
+                }
+            };
+        }else{
+            var params ={
+                TableName : "Business",
+                IndexName: "type-longitude-index",
+                KeyConditionExpression: "#tp = :tttt and longitude between :number1 and :number2",
+                FilterExpression: "latitude between :number3 and :number4",
+                ScanIndexForward: false,
+                ExpressionAttributeNames:{
+                    "#tp": "type"
+                },
+                ExpressionAttributeValues: {
+                    ":tttt": "business",
+                    ":number1": Location[0]-2,
+                    ":number2": Location[0]+2,
+                    ":number3": Location[1]-2,
+                    ":number4": Location[1]+2
+                }
+            };
+        }
     }
 
     var def = p.defer();
