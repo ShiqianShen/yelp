@@ -5,6 +5,17 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script type="text/javascript"  src="/javascripts/jquery.js"></script>
     <script type="text/javascript"  src="/javascripts/json2.js"></script>
+      <style>
+          #map {
+              height: 60%;
+              margin: 10%;
+          }
+          html, body {
+              height: 100%;
+              margin: 0;
+              padding: 2%;
+          }
+      </style>
     <script language="javascript" type="text/javascript">
         function UserList(jsons) {
             var table = document.getElementById("UserTable");
@@ -29,7 +40,7 @@
         function BusinessList(jsons) {
             var table = document.getElementById("BusinessTable");
             var arr = eval(jsons);
-            for (var i = 0; i < arr.length && i<10; i++) {
+            for (var i = 0; i < arr.length && i<20; i++) {
                 var jsonObj = arr[i];
                 var tr = table.insertRow(table.rows.length);
                 var td0 = tr.insertCell(0);
@@ -51,8 +62,60 @@
             }
         }
     </script>
+    <script>
+        function initMap(jsons) {
+            var arr = eval(jsons);
+
+            var cenLat = 0;
+            var cenLng = 0;
+            for (var i = 0; i < arr.length && i<20; i++){
+                var jsonObj = arr[i];
+                cenLat += jsonObj.latitude;
+                cenLng += jsonObj.longitude;
+            }
+            cenLat /= i;
+            cenLng /= i;
+
+            var center = {lat: cenLat, lng: cenLng};
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: center
+            });
+            //var Marker = [];
+            var Info = [];
+            for (var i = 0; i < arr.length && i<20; i++){
+                var jsonObj = arr[i];
+                var lat = jsonObj.latitude;
+                var lng = jsonObj.longitude;
+                var info = '<div id="content">'+
+                        '<div id="siteNotice">'+
+                        '</div>'+
+                        '<h2 id="firstHeading" class="firstHeading">'+jsonObj.name+'</h2>'+
+                        '<h3>stars: '+jsonObj.stars+'</h3>'+
+                        '<p>'+jsonObj.categories+'</p>'+
+                        '</div>';
+                Info.push(info);
+                var marker = new google.maps.Marker({
+                    position: {lat: lat, lng: lng},
+                    map: map,
+                    title: jsonObj.name
+                });
+                (function (i, marker) {
+                    google.maps.event.addListener(marker, 'click', function () {
+                        infowindow = new google.maps.InfoWindow();
+                        infowindow.setContent(Info[i]);
+                        infowindow.open(map, marker);
+                    });
+                })(i, marker);
+            }
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWnhT807ngIAoZO23vea2aRcJ1otoXE3I&callback=initMap">
+    </script>
   </head>
-  <body onload="UserList(<%= JSON.stringify(user) %>); BusinessList(<%= JSON.stringify(contents) %>);" background="../images/u=448124102,4271476439&fm=21&gp=0.jpg">
+  <body onload="UserList(<%= JSON.stringify(user) %>); BusinessList(<%= JSON.stringify(contents) %>); initMap(<%= JSON.stringify(contents) %>);" background="../images/u=448124102,4271476439&fm=21&gp=0.jpg">
     <h1><%= title %></h1>
     <br>
     <br>
@@ -82,5 +145,6 @@
     </table>
     <br>
     <br>
+    <div id="map"></div>
 </body>
 </html>
